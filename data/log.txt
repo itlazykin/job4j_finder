@@ -1,0 +1,3 @@
+c:.idea\checkstyleidea-libs\readme.txt
+c:data\log.txt
+c:target\surefire-reports\ru.job4j.AppTest.txt
