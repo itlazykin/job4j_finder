@@ -2,17 +2,31 @@ package ru.job4j;
 
 import java.util.HashMap;
 import java.util.Map;
-/*
-Класс отвечает за парсинг и валидацию аргументов командной строки.
+
+/**
+ * Класс ArgsName используется для разбора и хранения аргументов командной строки.
+ * Позволяет извлекать значения параметров по их ключам.
  */
 public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
+    /**
+     * Возвращает значение параметра по ключу.
+     *
+     * @param key ключ параметра.
+     * @return значение параметра.
+     * @throws IllegalArgumentException если ключ отсутствует или некорректен.
+     */
     public String get(String key) {
         checkForKey(key);
         return values.get(key);
     }
 
+    /**
+     * Парсит массив аргументов и сохраняет их в виде пар "ключ-значение".
+     *
+     * @param args массив аргументов командной строки.
+     */
     private void parse(String[] args) {
         for (String oneParameter : args) {
             String[] oneKeyPlusValue = oneParameter.split("=", 2);
@@ -20,6 +34,13 @@ public class ArgsName {
         }
     }
 
+    /**
+     * Создаёт экземпляр ArgsName и выполняет парсинг аргументов.
+     *
+     * @param args массив аргументов командной строки.
+     * @return объект ArgsName с разобранными аргументами.
+     * @throws IllegalArgumentException если аргументы не прошли валидацию.
+     */
     public static ArgsName of(String[] args) {
         checkBeforePars(args);
         ArgsName names = new ArgsName();
@@ -27,6 +48,12 @@ public class ArgsName {
         return names;
     }
 
+    /**
+     * Проверяет, содержит ли аргумент указанный ключ.
+     *
+     * @param key ключ для проверки.
+     * @throws IllegalArgumentException если ключ отсутствует или некорректен.
+     */
     private void checkForKey(String key) {
         if (key == null || key.trim().isEmpty()) {
             throw new IllegalArgumentException("Key cannot be null or empty");
@@ -39,6 +66,12 @@ public class ArgsName {
         }
     }
 
+    /**
+     * Проверяет аргументы командной строки на наличие обязательных условий.
+     *
+     * @param args массив аргументов командной строки.
+     * @throws IllegalArgumentException если аргументы не прошли валидацию.
+     */
     private static void checkBeforePars(String[] args) {
         if (args.length < 4) {
             throw new IllegalArgumentException("Incorrect parameters. "
