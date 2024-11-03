@@ -9,16 +9,31 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
 
-/*
- Управляет основными операциями программы: поиском, валидацией и записью в файл.
+/**
+ * Основной класс для поиска файлов по заданным параметрам, таких как имя, маска или регулярное выражение.
+ * Также включает методы для записи результатов поиска в файл.
  */
 public class FilesFinder {
+    /**
+     * Выполняет поиск файлов в указанной директории с использованием условия фильтрации.
+     *
+     * @param root      путь к директории, где будет происходить поиск.
+     * @param condition условие, которому должны соответствовать файлы.
+     * @return список найденных файлов, соответствующих условию.
+     * @throws IOException если возникает ошибка ввода-вывода при обходе файловой системы.
+     */
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
         SearchFiles searcher = new SearchFiles(condition);
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
 
+    /**
+     * Преобразует маску поиска файлов в регулярное выражение.
+     *
+     * @param string строка с маской (например, "*.txt").
+     * @return регулярное выражение, соответствующее маске.
+     */
     public static String convertMaskToRegex(String string) {
         string = string.replace(".", "\\.")
                 .replace('?', '.')
@@ -26,6 +41,12 @@ public class FilesFinder {
         return string;
     }
 
+    /**
+     * Валидирует параметры, необходимые для поиска файлов.
+     *
+     * @param argsForProgram объект с аргументами, содержащими ключи и значения параметров.
+     * @throws IllegalArgumentException если один из параметров неверен.
+     */
     public static void validationParameters(ArgsName argsForProgram) {
         File file = new File(argsForProgram.get("d"));
         String needFindFile = argsForProgram.get("n");
@@ -54,6 +75,13 @@ public class FilesFinder {
         }
     }
 
+    /**
+     * Записывает результаты поиска в файл.
+     *
+     * @param path     путь к файлу, в который будут записаны результаты.
+     * @param pathList список путей, найденных в ходе поиска.
+     * @throws IOException если возникает ошибка при записи в файл.
+     */
     public static void writeResultsToFile(String path, List<Path> pathList) throws IOException {
         String newPath = "data\\" + path;
         try (PrintWriter writer = new PrintWriter(new FileWriter(newPath, false))) {
