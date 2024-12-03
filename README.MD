@@ -1,5 +1,7 @@
 Консольная утилита для поиска файлов в файловой системе.
 
+![CI GitHubAction](https://github.com/itlazykin/job4j_finder/actions/workflows/maven.yml/badge.svg)
+
 Программа запускается с параметрами, например: -d=c: -n=*.?xt -t=mask -o=log.txt
 
 Обязательно после названия файла указывайте его расширение. 
